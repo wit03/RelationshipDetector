@@ -63,7 +63,7 @@ function displayImage(file) {
     reader.readAsDataURL(file);
 }
 
-(document).ready(() => {
+$(document).ready(() => {
     const storage = firebase.storage();
     const storageRef = storage.ref();
     const db = firebase.firestore();
