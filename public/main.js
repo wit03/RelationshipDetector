@@ -25,98 +25,48 @@ const relation = {
 }
 
 function clearPrediction() {
-    document.getElementById("img-predicted").innerHTML('');
-    document.querySelectorAll("#relation-summary", "#status", "prediction-text").text('');
-    document.getElementById("card").classList.add("display-none");
-
-    /*$('#img-predicted').html('');
+    $('#img-predicted').html('');
     $('#relation-summary', '#status', '#prediction-text').text('');
-    $('#card').css('display', 'none'); */
+    $('#card').css('display', 'none'); 
 }
 
 function updateProgressBar(status) {
     if (status == 'show') {
-        document.getElementById("progress-bar").classList.add("display-inline");
-        document.getElementById("progress-bar").classList.add("mdl-progress__indeterminate")
-
-        // $('#progress-bar').css('display', 'inline-block');
-        // $('#progress-bar').addClass('mdl-progress__indeterminate');
+        $('#progress-bar').css('display', 'inline-block');
+        $('#progress-bar').addClass('mdl-progress__indeterminate');
     } else if (status == 'hide') {
-        document.getElementById("progress-bar").classList.add("display-none");
-
-        //$('#progress-bar').css('display', 'none');
+        $('#progress-bar').css('display', 'none');
     }
 }
 
 function displayPrediction(data) {
-    document.getElementById("card").classList.add("display-none");
-    document.getElementById("status").textContent = "Got a prediction";
-
-    //$('#card').css('display', 'inline-block');
-    //$('#status').text('Got a prediction!');
+    $('#card').css('display', 'inline-block');
+    $('#status').text('Got a prediction!');
 
     // This demo assumes only one label returned
 
     let relationType = Object.keys(data)[0];
     let resultText = `${relationType}: ${(data[relationType] * 100).toFixed(2)}%\n`;
 
-    document.getElementById('prediction-text').textContent = resultText;
-    document.getElementById('prediction-text').textContent = relation[relationType].des;
-
-    // $('#prediction-text').text(resultText);
-    // $('#relation-summary').text(relation[relationType].des);
+   $('#prediction-text').text(resultText);
+   $('#relation-summary').text(relation[relationType].des);
 }
 
 function displayImage(file) {
     let img = document.createElement("img");
     img.file = file;
 
-    document.getElementById("img-predicted").appendChild(img);
-
-    // $('#img-predicted').append(img); 
+    $('#img-predicted').append(img); 
 
     let reader = new FileReader();
     reader.onload = (function (imgDiv) { return function (e) { imgDiv.src = e.target.result; }; })(img);
     reader.readAsDataURL(file);
 }
 
-(function () {
+(document).ready(() => {
     const storage = firebase.storage();
     const storageRef = storage.ref();
     const db = firebase.firestore();
-
-    document.getElementById('file-select').onclick = () => {
-        document.getElementById("img-upload").click()
-    }
-    document.onchange = (e) => {
-        let localFile = e.target.files[0]
-        clearPrediction();
-        updateProgressBar('show');
-        document.getElementById("status").textContent('Uploading image...');
-        //init child
-        let imgRef = storageRef.child(localFile.name)
-        imgRef.put(localFile).then(() => {
-            document.getElementById('Querying model...');
-            db.collection("images")
-                .doc(localFile.name)
-                .onSnapshot(function (doc) {
-                    if (doc.exists) {
-                        let relationData = doc.data();
-                        updateProgressBar('hide');
-                        if (relationData.predictionErr) {
-                            document.getElementById('status').textContent()
-                            $('#status').text(`${relationData.predictionErr} :(`);
-                        } else {
-                            displayPrediction(relationData);
-                            displayImage(localFile);
-                        }
-                    }
-                });
-        })
-    }
-})();
-
-/*(document).ready(() => {
 
     $('#file-select').on('click', () => {
         $('#img-upload').trigger("click");
@@ -148,4 +98,4 @@ function displayImage(file) {
                 });
         });
     });
-});*/
+});
