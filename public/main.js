@@ -26,8 +26,8 @@ const relation = {
 
 function clearPrediction() {
     $('#img-predicted').html('');
-    $('#weather-summary', '#status', '#prediction-text').text('');
-    $('#card').css('display', 'none');
+    $('#relation-summary', '#status', '#prediction-text').text('');
+    $('#card').css('display', 'none'); 
 }
 
 function updateProgressBar(status) {
@@ -44,32 +44,35 @@ function displayPrediction(data) {
     $('#status').text('Got a prediction!');
 
     // This demo assumes only one label returned
-    let cloudType = Object.keys(data)[0];
-    let resultText = `${cloudType}: ${(data[cloudType] * 100).toFixed(2)}%\n`;
-    $('#prediction-text').text(resultText);
-    $('#weather-summary').text(relation[cloudType].des);
+
+    let relationType = Object.keys(data)[0];
+    let resultText = `${relationType}: ${(data[relationType] * 100).toFixed(2)}%\n`;
+
+   $('#prediction-text').text(resultText);
+   $('#relation-summary').text(relation[relationType].des);
 }
 
 function displayImage(file) {
     let img = document.createElement("img");
     img.file = file;
+
     $('#img-predicted').append(img); 
 
     let reader = new FileReader();
-    reader.onload = (function(imgDiv) { return function(e) { imgDiv.src = e.target.result; }; })(img);
+    reader.onload = (function (imgDiv) { return function (e) { imgDiv.src = e.target.result; }; })(img);
     reader.readAsDataURL(file);
 }
- 
+
 $(document).ready(() => {
     const storage = firebase.storage();
     const storageRef = storage.ref();
     const db = firebase.firestore();
 
     $('#file-select').on('click', () => {
-        $('#cloud-upload').trigger("click");
+        $('#img-upload').trigger("click");
     });
 
-    $('#cloud-upload').on('change', (e) => {
+    $('#img-upload').on('change', (e) => {
         let localFile = e.target.files[0];
         clearPrediction();
         updateProgressBar('show');
@@ -81,18 +84,18 @@ $(document).ready(() => {
             $('#status').text('Querying model...');
             db.collection("images")
                 .doc(localFile.name)
-                .onSnapshot(function(doc) {
+                .onSnapshot(function (doc) {
                     if (doc.exists) {
-                        let cloudData = doc.data();
+                        let relationData = doc.data();
                         updateProgressBar('hide');
-                        if (cloudData.predictionErr) {
-                            $('#status').text(`${cloudData.predictionErr} :(`);
+                        if (relationData.predictionErr) {
+                            $('#status').text(`${relationData.predictionErr} :(`);
                         } else {
-                            displayPrediction(cloudData);
+                            displayPrediction(relationData);
                             displayImage(localFile);
                         }
                     }
-            });
+                });
         });
     });
 });
