@@ -42,24 +42,21 @@ function updateProgressBar(status) {
 function displayPrediction(data) {
     $('#card').css('display', 'inline-block');
     $('#status').text('Got a prediction!');
-
     // This demo assumes only one label returned
-
     let relationType = Object.keys(data)[0];
     let resultText = `${relationType}: ${(data[relationType] * 100).toFixed(2)}%\n`;
 
-   $('#prediction-text').text(resultText);
-   $('#relation-summary').text(relation[relationType].des);
+    $('#prediction-text').text(resultText);
+    $('#relation-summary').text(relation[relationType].des);
 }
 
 function displayImage(file) {
     let img = document.createElement("img");
     img.file = file;
-
     $('#img-predicted').append(img); 
 
     let reader = new FileReader();
-    reader.onload = (function (imgDiv) { return function (e) { imgDiv.src = e.target.result; }; })(img);
+    reader.onload = (function(imgDiv) { return function(e) { imgDiv.src = e.target.result; }; })(img);
     reader.readAsDataURL(file);
 }
 
@@ -69,10 +66,10 @@ $(document).ready(() => {
     const db = firebase.firestore();
 
     $('#file-select').on('click', () => {
-        $('#img-upload').trigger("click");
+        $('#cloud-upload').trigger("click");
     });
 
-    $('#img-upload').on('change', (e) => {
+    $('#cloud-upload').on('change', (e) => {
         let localFile = e.target.files[0];
         clearPrediction();
         updateProgressBar('show');
@@ -84,18 +81,18 @@ $(document).ready(() => {
             $('#status').text('Querying model...');
             db.collection("images")
                 .doc(localFile.name)
-                .onSnapshot(function (doc) {
+                .onSnapshot(function(doc) {
                     if (doc.exists) {
-                        let relationData = doc.data();
+                        let cloudData = doc.data();
                         updateProgressBar('hide');
-                        if (relationData.predictionErr) {
-                            $('#status').text(`${relationData.predictionErr} :(`);
+                        if (cloudData.predictionErr) {
+                            $('#status').text(`${cloudData.predictionErr} :(`);
                         } else {
-                            displayPrediction(relationData);
+                            displayPrediction(cloudData);
                             displayImage(localFile);
                         }
                     }
-                });
+            });
         });
     });
 });
