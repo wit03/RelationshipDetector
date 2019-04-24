@@ -33,9 +33,7 @@ div.mdl-layout__header-row {
 }
 
 div.demo-card-wide.mdl-card.mdl-shadow--2dp {
-    width: 450px;
-    text-align: center;
-    min-height: 300px;
+    width: calc(100%);
 }
 
 .demo-card-wide > .mdl-card__title {
@@ -44,10 +42,7 @@ div.demo-card-wide.mdl-card.mdl-shadow--2dp {
   }
 
 .mdl-card__title img {
-    max-width: 350px;
-    text-align: center;
-    margin: 0 auto;
-    padding: 5px;
+    width: 100%;
 }
 
 #prediction-text {
