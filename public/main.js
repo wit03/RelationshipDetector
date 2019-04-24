@@ -26,30 +26,31 @@ const relation = {
 
 function clearPrediction() {
     $('#img-predicted').html('');
-    $('#relation-summary', '#status', '#prediction-text').text('');
-    $('#card').css('display', 'none'); 
+    document.querySelectorAll('#relation-summary', '#status', '#prediction-text')
+    .forEach(el => el.text = (""))
+    document.querySelector('#card').style.display = 'none' 
 }
 
 function updateProgressBar(status) {
-    if (status == 'show') {
-        $('#progress-bar').css('display', 'inline-block');
-        $('#progress-bar').addClass('mdl-progress__indeterminate');
-    } else if (status == 'hide') {
-        $('#progress-bar').css('display', 'none');
+    if (status) {
+        document.querySelector('#progress-bar').style.display = 'inline-block'
+        document.querySelector('#progress-bar').classList.add('mdl-progress__indeterminate');
+    } else {
+        document.querySelector('#progress-bar').style.display = 'none'
     }
 }
 
 function displayPrediction(data) {
-    $('#card').css('display', 'inline-block');
-    $('#status').text('Got a prediction!');
+    document.querySelector('#card').style.display = 'inline-block'
+    document.querySelector('#status').innerText = 'Got a prediction!'
 
     // This demo assumes only one label returned
 
     let relationType = Object.keys(data)[0];
     let resultText = `${relationType}: ${(data[relationType] * 100).toFixed(2)}%\n`;
-
-   $('#prediction-text').text(resultText);
-   $('#relation-summary').text(relation[relationType].des);
+``
+   document.querySelector('#prediction-text').innerText = resultText
+   document.querySelector('#relation-summary').innerText = relation[relationType].des
 }
 
 function displayImage(file) {
@@ -68,28 +69,28 @@ $(document).ready(() => {
     const storageRef = storage.ref();
     const db = firebase.firestore();
 
-    $('#file-select').on('click', () => {
-        $('#img-upload').trigger("click");
+    document.querySelector('#file-select').addEventListener('click', () => {
+        document.querySelector('#img-upload').click()
     });
 
-    $('#img-upload').on('change', (e) => {
+    document.querySelector('#img-upload').addEventListener('change', e => {
         let localFile = e.target.files[0];
         clearPrediction();
-        updateProgressBar('show');
+        updateProgressBar(true);
 
         // Upload the image to Firebase Storage
-        $('#status').text('Uploading image...');
+        document.querySelector('#status').innerText = 'Uploading image...'
         let imgRef = storageRef.child(localFile.name);
         imgRef.put(localFile).then(() => {
-            $('#status').text('Querying model...');
+            document.querySelector('#status').innerText = 'Querying model...'
             db.collection("images")
                 .doc(localFile.name)
                 .onSnapshot(function (doc) {
                     if (doc.exists) {
                         let relationData = doc.data();
-                        updateProgressBar('hide');
+                        updateProgressBar(false);
                         if (relationData.predictionErr) {
-                            $('#status').text(`${relationData.predictionErr} :(`);
+                            document.querySelector('#status').innerText = `${relationData.predictionErr} :(`;
                         } else {
                             displayPrediction(relationData);
                             displayImage(localFile);
