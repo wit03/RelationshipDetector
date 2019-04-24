@@ -48,9 +48,14 @@ div.demo-card-wide.mdl-card.mdl-shadow--2dp {
 #prediction-text {
     color: rgb(33,150,243);
     font-size: 16px;
+    text-align: center;
     font-weight: bold;
 }
 
 #card {
     display: none;
+}
+
+#relation-summary {
+    text-align: center;
 }
