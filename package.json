@@ -1,0 +1,19 @@
+{
+  "name": "relationshipdetector",
+  "version": "1.0.0",
+  "main": "public/index.html",
+  "repository": "https://github.com/aomkirby123/RelationshipDetector",
+  "author": "aomkirby123 <aomkirby123@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^5.10.0"
+  },
+  "scripts": {
+    "start": "parcel dev/index.html",
+    "dev": "parcel dev/index.html",
+    "build": "parcel build dev/index.html --out-dir public"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  }
+}
