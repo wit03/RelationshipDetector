@@ -29,6 +29,8 @@ body {
     color:#888;
     text-align: center;
     margin-left: 10px;
+    font-size: 19px;
+    cursor:pointer;
 }
 
 #navbar {
@@ -42,7 +44,7 @@ body {
     border-radius: 8px;
     background-color:var(--root);
     box-shadow:0 5px 15px rgba(0,0,0,.0325);
-    position:fixed;
+    position:absolute;
     z-index:3000;
     top:calc(1.5vh + 25px);
     left: calc(50% - 225px);
@@ -82,13 +84,14 @@ body {
     width:550px;
     padding:0;
     padding-bottom: 10px;
-    margin:calc(5vh + 35px) auto 30px auto;
+    margin:calc(5vh + 35px) auto 50px auto;
     box-shadow:0 20px 40px rgba(0,0,0,.125);
     border-radius: 5px;
     animation: card-in .5s ease-out 0s 1;
-    transition: box-shadow .325s ease-out;
+    transition: box-shadow .325s ease-out, transform .25s ease-out;
 }
 
+#card:active { transform: scale(.975); }
 #card:hover, #card:focus {
     box-shadow:0 20px 40px rgba(0,0,0,.2);
 }
@@ -116,6 +119,7 @@ body {
     font-weight: normal;
     color:var(--primary);
     margin:0 0 2.5px 0;
+    text-transform: capitalize;
 }
 
 #card-detail {
@@ -145,6 +149,7 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 28px;
+    cursor:default;
 }
 
 #card-main {
@@ -159,7 +164,7 @@ h1, p { cursor:default; }
     width:400px;
     height:300px;
     position:absolute;
-    margin-top:85px;
+    margin:85px 0 50px 0;
     left: calc(50% - 200px);
     background-color:var(--root);
     border-radius: 5px;
@@ -173,10 +178,32 @@ h1, p { cursor:default; }
     letter-spacing: .25rem;
     cursor:pointer;
     animation: card-in .5s ease-out 0s 1;
+    transition: transform .25s ease-out;
 }
 
+#card-upload:active { transform: scale(.975); }
 #card-upload:hover, #card-upload:focus {
     box-shadow:0 8px 25px rgba(0,0,0,.0875);
+}
+
+#upload-another {
+    width:550px;
+    box-shadow:0 20px 40px rgba(0,0,0,.125);
+    border-radius: 5px;
+    padding: 25px;
+    position: relative;
+    margin:0 auto 50px auto;
+    transition: box-shadow .325s ease-out, transform .25s ease-out;
+    text-align: center;
+    font-size: 21px;
+    color:var(--primary);
+    animation: card-in .675s ease-out 0s 1;
+    cursor:pointer;
+}
+
+#upload-another:active { transform:scale(.975); }
+#upload-another:hover, #upload-another:focus {
+    box-shadow:0 20px 40px rgba(0,0,0,.2);
 }
 
 .hidden { display:none !important; }
@@ -191,26 +218,28 @@ h1, p { cursor:default; }
     left:0;
     padding-bottom:58px;
     background-color:var(--root-2);
-    animation: load-in .25s ease-out 0s 1;
+    animation: load-in .625s ease-out 0s 1;
 }
 
 @keyframes load-in {
-    from {opacity:0;}
+    0% {opacity:0;}
+    60% {opacity:0;}
+    100% {opacity:1;}
 }
 
-.loader {
+#loader {
     position: relative;
     margin: 0 auto;
     width: 100px;
 }
 
-.loader:before {
+#loader:before {
     content: '';
     display: block;
     padding-top: 100%;
 }
   
-.circular {
+#circular {
     animation: rotate 2s linear infinite;
     height: 100%;
     transform-origin: center center;
@@ -223,24 +252,12 @@ h1, p { cursor:default; }
     margin: auto;
 }
 
-.circular-shadow {
-  top:5px !important;
-  left:5px !important;
-  opacity:.25;
-  filter: blur(5px);
-}
-  
-.path {
+#path {
     stroke-dasharray: 1, 200;
     stroke-dashoffset: 0;
     animation: dash 1.5s ease-in-out infinite;
     stroke-linecap: round;
     stroke: var(--primary);
-}
-
-.path-shadow {
-    stroke: var(--primary-2) !important;
-    opacity:.5;
 }
 
 #reload-button {
@@ -295,8 +312,15 @@ h1, p { cursor:default; }
         width:90%;
         left:5%;
     }
-    #card {
+    #card, #upload-another {
         width:90%;
-        left:5%;
     }
+}
+
+@supports (-webkit-overflow-scrolling: touch){
+    #navbar-upload:hover, #navbar-upload:focus { background-color: rgba(0,123,255,.1075); }
+    #card:hover, #card:focus,
+    #card-upload:hover, #card-upload:focus,
+    #upload-another:hover, #upload-another:focus 
+    { transform: scale(.975); }
 }
