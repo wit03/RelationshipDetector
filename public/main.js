@@ -40,17 +40,21 @@ function updateProgressBar(status) {
     }
 }
 
-function displayPrediction(data) {
-    document.querySelector('#card').style.display = 'inline-block'
-    document.querySelector('#status').innerText = 'Got a prediction!'
+function displayPrediction(data, timeout) {
+  document.querySelector('#card').style.display = 'inline-block'
+  document.querySelector('#status').innerText = 'Got a prediction!'
 
-    // This demo assumes only one label returned
+  // This demo assumes only one label returned
 
-    let relationType = Object.keys(data)[0];
-    let resultText = `${relationType}: ${(data[relationType] * 100).toFixed(2)}%\n`;
-``
-   document.querySelector('#prediction-text').innerText = resultText
-   document.querySelector('#relation-summary').innerText = relation[relationType].des
+  let relationType = Object.keys(data)[0];
+  let resultText = `${relationType}: ${(data[relationType] * 100).toFixed(2)}%\n`;
+  document.querySelector('#prediction-text').innerText = resultText
+  document.querySelector('#relation-summary').innerText = relation[relationType].des
+
+  setTimeout(() => {
+  	const block = document.getElementById('status')
+  	block.parentNode.removeChild(block)
+  }, (timeout || 1) * 1e3)
 }
 
 function displayImage(file) {
