@@ -21,18 +21,35 @@ window.onload = () => {
     let ghostInput = document.getElementById("input-ghost"),
         navbarUpload = document.getElementById("navbar-upload"),
         cardUpload = document.getElementById("card-upload"),
+        uploadAnother = document.getElementById("upload-another"),
         loadscreen = document.getElementById("loadscreen"),
-        card = document.getElementById("card");
+        card = document.getElementById("card"),
+        navbarTitle = document.getElementById("navbar-title");
 
-    const showProgress = () => {
+    navbarUpload.onclick = () => { openUpload(); }
+    cardUpload.onclick = () => { openUpload(); }
+    uploadAnother.onclick = () => { openUpload(); }
+
+    navbarTitle.onclick = () => { showLanding(); }
+
+    const openUpload = () => { ghostInput.click(); }
+
+    const showLanding = () => {
+        cardUpload.classList = "";
+        loadscreen.classList = "hidden";
+        card.classList = "hidden";
+        uploadAnother.classList = "hidden";
+    }, showProgress = () => {
         cardUpload.classList = "hidden";
         loadscreen.classList = "";
         card.classList = "hidden";
+        uploadAnother.classList = "hidden";
     },
     showResult = (data, localFile) => {
         cardUpload.classList = "hidden";
         loadscreen.classList = "hidden";
         card.classList = "";
+        uploadAnother.classList = ""
 
         let relationType = Object.keys(data)[0];
 
@@ -41,11 +58,6 @@ window.onload = () => {
         document.getElementById("card-detail").innerHTML = relation[relationType].des;
         document.getElementById("card-image").src = URL.createObjectURL(localFile);
     };
-
-    navbarUpload.onclick = () => { openUpload(); }
-    cardUpload.onclick = () => { openUpload(); }
-
-    const openUpload = () => { ghostInput.click(); }
 
     firebase.initializeApp({
         "apiKey": "AIzaSyCxsAjv5D4zK5BNk_t6ELjlDwAk55VVaiY",
@@ -73,6 +85,8 @@ window.onload = () => {
     }
 
     ghostInput.onchange = (e) => {
+        if(e.target.files[0] === undefined) return false;
+
         showProgress();
 
         let localFile = e.target.files[0];
