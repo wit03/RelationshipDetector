@@ -15,7 +15,7 @@
 // Replace the strings below with your own project & model info
 const project = 'ace-ensign-237816';
 const region = 'us-central1';
-const automl_model = 'ICN7615021487697092444';
+const automl_model = 'ICN7812342780247165164';
 
 const sizeOf = require('image-size');
 const fs = require('fs');
