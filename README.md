@@ -20,12 +20,6 @@ or use yarn
 $ yarn install
 $ yarn start
 ```
-
-2. Before sent PR~
-```sh
-$ yarn build
-```
-
 ## Contribution 
 Feel free to sent your PR~.
 
