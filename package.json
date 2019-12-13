@@ -6,7 +6,7 @@
   "author": "aomkirby123 <aomkirby123@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "firebase": "^5.10.0"
+    "firebase": "^7.6.0"
   },
   "scripts": {
     "start": "parcel dev/index.html",
@@ -14,6 +14,6 @@
     "build": "parcel build dev/index.html --out-dir public"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.12.3"
+    "parcel-bundler": "^1.12.4"
   }
 }
